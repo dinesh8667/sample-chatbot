@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Chatbot</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #chatbox { border: 1px solid black; width: 50%; margin: auto; padding: 10px; height: 300px; overflow-y: scroll; }
+        input { width: 60%; padding: 10px; margin-top: 10px; }
+        button { padding: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Chatbot</h2>
+    <div id="chatbox"></div>
+    <input type="text" id="messageInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        var socket = io("http://127.0.0.1:5000");  // Connect to Flask backend
+
+        socket.on("response", function(data) {
+            let chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML += "<p><b>Bot:</b> " + data.message + "</p>";
+        });
+
+        function sendMessage() {
+            let messageInput = document.getElementById("messageInput");
+            let message = messageInput.value;
+
+            let chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML += "<p><b>You:</b> " + message + "</p>";
+
+            socket.emit("message", { "message": message });
+            messageInput.value = "";
+        }
+    </script>
+</body>
+</html>
