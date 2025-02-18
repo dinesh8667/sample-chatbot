@@ -19,7 +19,7 @@
     <button onclick="sendMessage()">Send</button>
 
     <script>
-        var socket = io("http://127.0.0.1:5000");  // Connect to Flask backend
+        var socket = io("https://samplechatbotbydinesh.netlify.app/");  // Connect to Flask backend
 
         socket.on("response", function(data) {
             let chatbox = document.getElementById("chatbox");
